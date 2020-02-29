@@ -55,18 +55,18 @@ mkdir('Image');
 
 cd Image
 
-imwrite(allOn, 'GrayCode01.jpg');
-imwrite(allOff, 'GrayCode02.jpg');
+imwrite(allOn, 'GrayCode1.jpg');
+imwrite(allOff, 'GrayCode2.jpg');
 
 i = 1;
 j = 1;
 k = 1;
 for j = 1:size(I,1)
-   for i = 1:size(I,2)
-       fname = sprintf('GrayCode0%d.jpg', (k + 2));
+   for i = 1:(size(I,2)-1)
+       fname = sprintf('GrayCode%d.jpg', (k + 2));
        imwrite(I{j,i}, fname);
        k = k + 1;
-       fname = sprintf('GrayCode0%d.jpg', (k + 2));
+       fname = sprintf('GrayCode%d.jpg', (k + 2));
        imwrite(J{j,i}, fname);
        k = k + 1;
    end
