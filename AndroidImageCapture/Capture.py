@@ -2,6 +2,11 @@ import cv2
 import urllib.request
 import os
 
+"""
+Testing script for capture of images using an android phone
+Use of the IPCam software on the APP store, with camera connected to the internet
+"""
+
 os.chdir(os.path.dirname(__file__))
 print("Saving files to:\n")
 print(os.getcwd())

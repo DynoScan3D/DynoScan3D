@@ -3,6 +3,8 @@ import os
 import screeninfo 
 
 """
+Testing script to show images onto a second screen (projector)
+
 Requires installation of the screeninfo module
 https://pypi.org/project/screeninfo/
 """
