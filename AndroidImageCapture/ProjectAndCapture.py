@@ -2,7 +2,6 @@ import cv2
 import os
 import screeninfo
 import urllib.request
-import time
 
 """
 Script should project the gray code images sequentially with a delay of 500ms, and an android phone with
@@ -22,7 +21,7 @@ TO DO:
 #Sets url for IP Webcam interface
 url = "http://192.168.0.60:8080"
 url_vid = url + "/video"
-cap = cv2.VideoCapture(url_vid)
+#cap = cv2.VideoCapture(url_vid)
 
 #Sets directory to current folder script is in
 os.chdir(os.path.dirname(__file__))
@@ -40,7 +39,7 @@ cv2.moveWindow("My Window", main_res[0], main_res[1]);
 cv2.setWindowProperty("My Window", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
 #Constants to set
-exp_time_ms = 500 #Exposure time in miliseconds
+exp_time_ms = 200 #Exposure time in miliseconds
 scan_name = "Calibration" #Name of subfolder to which images are saved
 scan_set = 1 #Number of scan rounds
 
@@ -61,14 +60,16 @@ while(True):
     while (i < len(os.listdir(os.getcwd() + "\GrayCodeImages")) + 1):
         image_path = os.getcwd() + "\GrayCodeImages"
         img = cv2.imread(image_path + "\GrayCode" + str(i) + ".jpg")
+        cv2.imshow("My Window" , img)
+        cv2.waitKey(exp_time_ms)
+        print("Take pic of " + image_path + "\GrayCode" + str(i) + ".jpg")
         picture = urllib.request.urlretrieve(url + "/photo.jpg", 
-                                             os.getcwd() + "\\" + scan_name + 
-                                             "\\" + scan_set + "\\Image" + str(i) + ".jpg")
-        time.sleep(exp_time_ms)
+                                            os.getcwd() + "\\" + scan_name + 
+                                             "\\" + str(scan_set) + "\\Image" + str(i) + ".jpg")
         i += 1
     
     #User input to decide on choice of action
-    key = input("[c] to scan another set, [n] to scan another object, another other button to quit: ")
+    key = input("[c] to scan another set, [n] to scan another object, any other button to quit: ")
     if key == "c":
         i = 1
         scan_set += 1
@@ -79,6 +80,7 @@ while(True):
         while os.path.exists(scan_name):
             scan_name = input("\nPrevious folder already exists!\nPlease enter name of new object to scan: ")
     else:
+        cv2.destroyWindow("My Window")
         break
     
 

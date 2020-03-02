@@ -1,6 +1,7 @@
 import cv2 
 import os
 import screeninfo 
+import time
 
 """
 Testing script to show images onto a second screen (projector)
@@ -29,7 +30,18 @@ cv2.namedWindow("My Window", cv2.WINDOW_NORMAL);
 cv2.moveWindow("My Window", main_res[0], main_res[1]);
 cv2.setWindowProperty("My Window", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
+while i<43:
+    cv2.imshow("My Window" , img)
+    img = cv2.imread(image_path + "\GrayCode" + str(i) + ".jpg")
+    i += 1
+    cv2.waitKey(500)
+
+cv2.waitKey(0)
+cv2.destroyWindow("My Window")
+
+"""
 #Show image on window
 cv2.imshow("My Window" , img)
 cv2.waitKey(0)
 cv2.destroyWindow("My Window")
+"""
