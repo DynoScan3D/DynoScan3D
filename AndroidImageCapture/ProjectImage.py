@@ -1,7 +1,7 @@
 import cv2 
 import os
 import screeninfo 
-import time
+
 
 """
 Testing script to show images onto a second screen (projector)

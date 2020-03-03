@@ -62,10 +62,14 @@ while(True):
         img = cv2.imread(image_path + "\GrayCode" + str(i) + ".jpg")
         cv2.imshow("My Window" , img)
         cv2.waitKey(exp_time_ms)
-        print("Take pic of " + image_path + "\GrayCode" + str(i) + ".jpg")
-        picture = urllib.request.urlretrieve(url + "/photo.jpg", 
+        if i < 10:
+            picture = urllib.request.urlretrieve(url + "/photo.jpg", 
                                             os.getcwd() + "\\" + scan_name + 
-                                             "\\" + str(scan_set) + "\\Image" + str(i) + ".jpg")
+                                             "\\" + str(scan_set) + "\\Image0" + str(i) + ".jpg")
+        else:
+            picture = urllib.request.urlretrieve(url + "/photo.jpg", 
+                                                os.getcwd() + "\\" + scan_name + 
+                                                 "\\" + str(scan_set) + "\\Image" + str(i) + ".jpg")
         i += 1
     
     #User input to decide on choice of action
