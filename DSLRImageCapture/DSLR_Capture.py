@@ -1,5 +1,3 @@
-from time import sleep
-from datetime import datetime
 from sh import gphoto2 as gp
 import signal, os, subprocess
 import time
@@ -7,8 +5,39 @@ import cv2
 import screeninfo
 
 """
+Script should project the gray code images sequentially and a DSLR connected
+to the PC/raspberry pi via USB cable should take an image for each projected 
+pattern.
 
-TAKE NOTE THAT Linux uses forward slashes '/'
+These gray code images should be stored in a subfolder to the parent directory
+with the folder name GrayCodeImages and named "GrayCodei.jpg" where i is the 
+image number counting from 1.
+
+Requires installation of the screeninfo module
+https://pypi.org/project/screeninfo/
+
+Requires gphoto2 command line interface, which does not run in windows
+http://www.gphoto.org/
+
+Requires installation of the cv2 module
+
+Future improvements:
+    Error checking - Monitor numbers, existence of graycode folder
+    Implement changing settings from script instead of manually changing from
+    camera 
+        Limited by the read-only nature of some settings when accessed remotely
+    Camera confirmation - If multiple devices are connected
+    Addition of date and time stamp to folder names
+
+TAKE NOTE: Linux uses forward slashes '/'
+
+Operational notes:
+    The projector, connected as a second screen is taken TO THE RIGHT of the 
+    primary screen. This is important for the projected images to show up
+    Camera will only be detected when it is on, and past the initial screen.
+    If projected images are showing up on primary monitor (which it should not)
+    try tweaking the values in the cv2.moveWindow
+
 """
     
 def killgphoto2Process():
@@ -16,6 +45,9 @@ def killgphoto2Process():
     This function kills the current gphoto2 process that is automatically
     started when the camera is plugged in. This existing process prevents
     capture of images
+    
+    Function taken from:
+    https://www.youtube.com/watch?v=1eAYxnSU2aw
     """
     p = subprocess.Popen(['ps', '-A'], stdout = subprocess.PIPE)
     out, err = p.communicate()
@@ -27,8 +59,6 @@ def killgphoto2Process():
             os.kill(pid, signal.SIGKILL)
             print('Process Killed')
             
-shot_date = datetime.now().strftime("%Y-%m-%d")
-shot_time = datetime.now().strftime("%Y-%m-%d %H: %M")
 
 """
 Commands - To be run using the gp(COMMAND) line
@@ -42,11 +72,13 @@ and can be found by querying (in the terminal):
 """
 clearCommand = ["--folder", "/store_00010001/DCIM/100D5000", "-R", "--delete-all-files"]
 triggerCommand = ["--trigger-capture"]
+captureCommand = ["--capture-image"]
 downloadCommand = ["--get-all-files"]
 
 
 """
 Settings - Seems to change sometimes and sometimes it does not???
+Similarlyl run using the gp(COMMAND) line
 
 List of read-only settings that must be changed from camera:
     Focal length
@@ -62,8 +94,14 @@ autofocusCommand = ["--set-config", "autofocus=0"] # 0 for off, 1 for on
 focallengthCommand = ["--set-config", "focallength=30"] 
 
 def captureImages():
-    gp(triggerCommand)
-    sleep(0.5)
+    """
+    Single-shot image capture and download
+    Use of captureCommand instead of triggerCommand eliminates need for pausing
+    but prevents finer adjustments to settings
+    
+    See gphoto2 manual for more information
+    """
+    gp(captureCommand)
     tic = time.monotonic() * 1000
     print("Downloading:")
     gp(downloadCommand)
@@ -80,9 +118,9 @@ home_folder = os.getcwd()
 os.chdir(home_folder)
 print("Saving files to:")
 print(home_folder)
-scan_name = input("Please enter name of new object to scan:") #Name of subfolder to which images are saved
-scan_set = 1 #Number of scan rounds
-exp_time_ms = 200 #Image time time in miliseconds
+scan_name = input("Please enter name of new object to scan: ")
+scan_set = 1
+exp_time_ms = 200 #Image time in miliseconds
 
 #Get monitor resolution sizes
 screens = screeninfo.get_monitors()
@@ -94,10 +132,10 @@ cv2.namedWindow("My Window", cv2.WINDOW_NORMAL);
 cv2.moveWindow("My Window", main_res[0], 0);
 cv2.setWindowProperty("My Window", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
-#killgphoto2Process()
-#gp(clearCommand)
+killgphoto2Process()
+gp(clearCommand)
 
-while(True):
+while(True): 
     #Create subdirectories
     if not os.path.exists(scan_name):
         os.makedirs(scan_name)
@@ -115,7 +153,7 @@ while(True):
         cv2.waitKey(exp_time_ms)
         
         os.chdir(home_folder + "/" + scan_name + "/" + str(scan_set))
-        #captureImages()
+        captureImages()
         i += 1
     renameFiles()
     
