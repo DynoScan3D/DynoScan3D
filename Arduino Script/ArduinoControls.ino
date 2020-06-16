@@ -22,7 +22,7 @@ boolean newData = false;
 int dataNumber = 0;
 
 //interrupt pin for killswitch
-const byte interruptPin = 8;      //SHOULD BE PIN 2
+const byte interruptPin = 2;      
 
 //pin for Operation state LED - Turntable in rotation: HIGH; Turntable not in rotation: LOW
 const int LEDpin = 9;
