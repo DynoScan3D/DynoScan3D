@@ -13,6 +13,9 @@ Contains engineering drawings for all manufactured components of the project.
 ### DSLRImageCapture
 Image projection and capture scripts using DSLR cameras, the current preferred choice of camera.
 
+### Documents
+Includes the progress report, quality plan, final report, and a user manual for the project.
+
 ### GrayCode
 Contains scripts to generate and save gray code images based on the stipulated screen resolution.
 
