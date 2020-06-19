@@ -14,7 +14,7 @@ Contains engineering drawings for all manufactured components of the project.
 Image projection and capture scripts using DSLR cameras, the current preferred choice of camera.
 
 ### Documents
-Includes the progress report, quality plan, final report, and a user manual for the project. Also includes the meeting minutes for all group and supervisor meetings throughout the academic year of 2019/2020.
+Includes the cost sheet, progress report, quality plan, final report, and a user manual for the project. Also includes the meeting minutes for all group and supervisor meetings throughout the academic year of 2019/2020.
 
 ### GrayCode
 Contains scripts to generate and save gray code images based on the stipulated screen resolution.
